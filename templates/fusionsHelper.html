@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Fusions requests</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/styles/searchbar.css">
+  </head>
+  <body>
+  {% if success %}
+  <div id="success-div">
+    {{ success }}
+  </div>
+  {% endif %}
+  {% if error %}
+    <div id="failure-div">
+      {{ error }}
+    </div>
+  {% endif %}
+  <button id="swap-button" onclick="swapHeadBody()">Swap head / body</button>
+  <table id="globtable">
+  <form name="fusion-form" action="{{ url_for('getFusionCode') }}" method="post" class="form-example">
+
+    <select name="tier" id="tier" required>
+      <option value="Uber" selected="selected">Tier : Uber</option>
+      <option value="OU">Tier : OU</option>
+      <option value="UU">Tier : UU</option>
+      <option value="RU">Tier : RU</option>
+      <option value="NU">Tier : NU</option>
+      <option value="PU">Tier : PU</option>
+      <option value="LC">Tier : LC</option>
+    </select>
+
+    <div class="form-example">
+      <input type="submit" value="Submit" id="submit-button">
+    </div>
+    
+    <div class="form-example">
+      Pokédex num: 
+      <input type="text" name="pokedex-num" id="pokedex-num" required>
+    </div>
+  
+  
+    <tr>
+  	   <td>
+         <div id="head-div">
+            <input type="text" id="headInput" name="headInput"  onkeyup="shead()" placeholder="Search for head part of the fusion">
+            <ul id="headUL">
+              {% for pokemon in pokemons %}
+                <li id="{{ pokemon }}" onclick="setHeadText(this.id)"><a href="#">{{ pokemon }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+  	   </td>
+  	   <td>
+        <div id="body-div">
+          <input type="text" id="bodyInput" name="bodyInput" onkeyup="sbody()" placeholder="Search for body part of the fusion">
+          <ul id="bodyUL">
+            {% for pokemon in pokemons %}
+              <li id="{{ pokemon }}" onclick="setBodyText(this.id)"><a href="#">{{ pokemon }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </td>
+    </form>
+      <td>
+        <div id="result-div">
+          <!-- <div>
+          {% autoescape false %}
+          TEST
+          <form>
+          <input type="text" maxlength="1000000" value="{{ pokedexTS }}" id="pokedexInput">
+          <button onclick="copyPokedexToClipboard()">Copy pokedex.ts code</button>
+          </form>
+          {% endautoescape %}
+          </div> -->
+
+          <div style="overflow-y: scroll; height: 1000000px; width: 100%;">
+          {% autoescape false %}
+            {% if pokedexTS %}
+            pokedex.ts:<br/><br/>
+              {{ pokedexTS }}
+            {% endif %}
+            <br/><br/>
+            {% if formatsTS %}
+            formats-data.ts:<br/><br/>
+              {{ formatsTS }}
+            {% endif %}
+            <br/><br/>
+            {% if learnsetsTS %}
+            learnsets.ts:<br/><br/>
+              {{ learnsetsTS }}
+            {% endif %}
+          {% endautoescape %}
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+  </table>
+  <script src="../static/js/searchbar.js"></script>
+  </body>
+</html>
