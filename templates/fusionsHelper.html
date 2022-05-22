@@ -47,7 +47,7 @@
     <tr>
   	   <td>
          <div id="head-div">
-            <input type="text" id="headInput" name="headInput"  onkeyup="shead()" placeholder="Search for head part of the fusion">
+            <input type="text" id="headInput" name="headInput"  onkeyup="shead()" placeholder="Search for head part of the fusion" value="{{ request.form['headInput'] }}">
             <ul id="headUL">
               {% for pokemon in pokemons %}
                 <li id="{{ pokemon }}" onclick="setHeadText(this.id)"><a href="#">{{ pokemon }}</a></li>
@@ -57,7 +57,7 @@
   	   </td>
   	   <td>
         <div id="body-div">
-          <input type="text" id="bodyInput" name="bodyInput" onkeyup="sbody()" placeholder="Search for body part of the fusion">
+          <input type="text" id="bodyInput" name="bodyInput" onkeyup="sbody()" placeholder="Search for body part of the fusion" value="{{ request.form['bodyInput'] }}">
           <ul id="bodyUL">
             {% for pokemon in pokemons %}
               <li id="{{ pokemon }}" onclick="setBodyText(this.id)"><a href="#">{{ pokemon }}</a></li>
