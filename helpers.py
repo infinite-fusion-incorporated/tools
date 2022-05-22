@@ -542,10 +542,12 @@ def saveSprite(sprite, type, filename):
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5"] + filename)
 		for filepath in filepaths:
 			tmpSprite = Image.open(sprite)
+			tmpSprite = tmpSprite.resize((96,96))
 			tmpSprite.save(filepath)
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
 		backsprite = Image.open(sprite)
-		backsprite = backsprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+		backsprite = backsprite.transpose(PIL.Image.Transpose.FLIP_LEFT_RIGHT)
+		backsprite = backsprite.resize((96,96))
 		backsprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["icons"] + filename)
 		icon = Image.open(sprite)
@@ -554,13 +556,15 @@ def saveSprite(sprite, type, filename):
 	if type == 'shiny':
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["dex-shiny"] + filename)
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-shiny"] + filename)
+		for filepath in filepaths:
+			tmpSprite = Image.open(sprite)
+			tmpSprite = tmpSprite.resize((96,96))
+			tmpSprite.save(filepath)
 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
 		backsprite = Image.open(sprite)
 		backsprite = backsprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+		backsprite = backsprite.resize((96,96))
 		backsprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
-		for filepath in filepaths:
-			tmpSprite = Image.open(sprite)
-			tmpSprite.save(filepath)
 	return filepaths
 
 def uploadOnGithub(filepaths):
