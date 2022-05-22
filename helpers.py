@@ -482,7 +482,7 @@ def getPokedexTS(fusionData):
 	pokedexTS = ""
 	pokedexTS += fusionData['id'] + ': {' + carriageReturn
 	pokedexTS += tabulation + 'num: ' + fusionData['num'] + ',' + carriageReturn
-	pokedexTS += tabulation + 'name: ' + fusionData['name'] + ',' + carriageReturn
+	pokedexTS += tabulation + 'name: "' + fusionData['name'] + '",' + carriageReturn
 	pokedexTS += tabulation + 'baseSpecies: "' + fusionData['head'] + '",' + carriageReturn
 	pokedexTS += tabulation + 'forme: "' + fusionData['body'] + '",' + carriageReturn
 	pokedexTS += tabulation + 'types: ' + "[" + ', '.join(map(lambda x: "\"" + x + "\"", fusionData['types'])) + "]" + ',' + carriageReturn
@@ -528,57 +528,53 @@ def getLearnsetsTS(fusionData):
 	tabulation = "&nbsp;&nbsp;&nbsp;"
 	learnsetsTS = ""
 	learnsetsTS += fusionData['id'] + ': {' + carriageReturn
-	learnsetsTS += tabulation + 'learnset: ' + ': {' + carriageReturn
+	learnsetsTS += tabulation + 'learnset' + ': {' + carriageReturn
 	for move in fusionData['learnset']:
 		learnsetsTS += tabulation + tabulation + move + ": [\"8M\"]," + carriageReturn
 	learnsetsTS += tabulation + '},' + carriageReturn
 	learnsetsTS += '},'
 	return learnsetsTS
 
-# def saveSprite(sprite, type, orientation, filename, autoflip):
-# 	filepaths = []
-# 	if type == 'regular' and orientation == 'front':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["dex"] + filename)
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5"] + filename)
-# 	if type == 'regular' and orientation == 'back' and autoflip == 'no':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
-# 	if type == 'shiny' and orientation == 'front':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["dex-shiny"] + filename)
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-shiny"] + filename)
-# 	if type == 'shiny' and orientation == 'back' and autoflip == 'no':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
-# 	for filepath in filepaths:
-# 		tmpSprite = Image.open(sprite)
-# 		tmpSprite.save(filepath)
-# 	if type == 'regular' and orientation == 'front':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["icons"] + filename)
-# 		icon = Image.open(sprite)
-# 		icon = icon.resize((40, 40))
-# 		icon.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["icons"] + filename)
-# 	if type == 'regular' and orientation == 'back' and autoflip == 'yes':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
-# 		autoflippedBacksprite = Image.open(sprite)
-# 		autoflippedBacksprite = autoflippedBacksprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-# 		autoflippedBacksprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
-# 	if type == 'shiny' and orientation == 'back' and autoflip == 'yes':
-# 		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
-# 		autoflippedBacksprite = Image.open(sprite)
-# 		autoflippedBacksprite = autoflippedBacksprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-# 		autoflippedBacksprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
-# 	return filepaths
+def saveSprite(sprite, type, filename):
+	filepaths = []
+	if type == 'regular':
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["dex"] + filename)
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5"] + filename)
+		for filepath in filepaths:
+			tmpSprite = Image.open(sprite)
+			tmpSprite.save(filepath)
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
+		backsprite = Image.open(sprite)
+		backsprite = backsprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+		backsprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back"] + filename)
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["icons"] + filename)
+		icon = Image.open(sprite)
+		icon = icon.resize((40, 40))
+		icon.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["icons"] + filename)
+	if type == 'shiny':
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["dex-shiny"] + filename)
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-shiny"] + filename)
+		filepaths.append(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
+		backsprite = Image.open(sprite)
+		backsprite = backsprite.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+		backsprite.save(LOCAL_SPRITES_GIT_REPO + conf.git_repo["gen5-back-shiny"] + filename)
+		for filepath in filepaths:
+			tmpSprite = Image.open(sprite)
+			tmpSprite.save(filepath)
+	return filepaths
 
-# def uploadOnGithub(filepaths):
-# 	message = "Added: "
-# 	os.chdir(LOCAL_SPRITES_GIT_REPO)
-# 	repo = Repo.init(LOCAL_SPRITES_GIT_REPO).git
-# 	index = Repo.init(LOCAL_SPRITES_GIT_REPO).index
-# 	g = Git(LOCAL_SPRITES_GIT_REPO)
-# 	g.pull('origin','master')
-# 	for filepath in filepaths:
-# 		message += "\n" + filepath.split(LOCAL_SPRITES_GIT_REPO)[1]
-# 		repo.add(filepath)
-# 	index.commit(message)
-# 	g.push('origin','master')
+def uploadOnGithub(filepaths):
+	message = "Added: "
+	os.chdir(LOCAL_SPRITES_GIT_REPO)
+	repo = Repo.init(LOCAL_SPRITES_GIT_REPO).git
+	index = Repo.init(LOCAL_SPRITES_GIT_REPO).index
+	g = Git(LOCAL_SPRITES_GIT_REPO)
+	g.pull('origin','master')
+	for filepath in filepaths:
+		message += "\n" + filepath.split(LOCAL_SPRITES_GIT_REPO)[1]
+		repo.add(filepath)
+	index.commit(message)
+	g.push('origin','master')
 
 ########################## ROUTES ##########################
 
@@ -611,22 +607,20 @@ def getFusionCode():
 			return render_template('fusionsHelper.html', success=successMessage, pokedexTS=pokedexTS, formatsTS=formatsTS, learnsetsTS=learnsetsTS, pokemons=IFPokemonList, mimetype='text/html')
 	return render_template('fusionsHelper.html', pokemons=IFPokemonList)
 
-# @app.route('/addSprites',methods = ['POST', 'GET'])
-# def addSprites():
-# 	if request.method == 'POST':
-# 		if 'sprite' in request.files and request.form:
-# 			if '.png' not in request.form['sprite-name']:
-# 				return render_template('spritesHelper.html', error='malformed sprite name: missing .png')
-# 			filepaths = saveSprite(
-# 				request.files['sprite'], 
-# 				request.form['sprite-type'], 
-# 				request.form['sprite-orientation'], 
-# 				request.form['sprite-name'], 
-# 				request.form['autoflip']
-# 			)
-# 			uploadOnGithub(filepaths)
-# 			return render_template('spritesHelper.html')
-# 	return render_template('spritesHelper.html')
+@app.route('/addSprites',methods = ['POST', 'GET'])
+def addSprites():
+	if request.method == 'POST':
+		if 'sprite' in request.files and request.form:
+			if '.png' not in request.form['sprite-name']:
+				return render_template('spritesHelper.html', error='malformed sprite name: missing .png')
+			filepaths = saveSprite(
+				request.files['sprite'], 
+				request.form['sprite-type'],
+				request.form['sprite-name']
+			)
+			uploadOnGithub(filepaths)
+			return render_template('spritesHelper.html')
+	return render_template('spritesHelper.html')
 
 if __name__ == '__main__':
 	if DEBUG:
