@@ -326,7 +326,8 @@ Nosepass
 Probopass
 Honedge
 Doublade
-Aegislash
+Aegislash-Blade
+Aegislash-Shield
 Pawniard
 Bisharp
 Luxray
@@ -342,7 +343,7 @@ Groudon
 Rayquaza
 Dialga
 Palkia
-Giratina
+Giratina-Origin
 Regigigas
 Darkrai
 Genesect
