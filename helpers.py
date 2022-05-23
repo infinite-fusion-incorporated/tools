@@ -519,7 +519,7 @@ def getFormatsTS(fusionData):
 	tabulation = "&nbsp;&nbsp;&nbsp;"
 	formatsTS = ""
 	formatsTS += fusionData['id'] + ': {' + carriageReturn
-	formatsTS += tabulation + 'tier: ' + fusionData['tier'] + ',' + carriageReturn
+	formatsTS += tabulation + 'tier: "' + fusionData['tier'] + '",' + carriageReturn
 	formatsTS += '},'
 	return formatsTS
 
